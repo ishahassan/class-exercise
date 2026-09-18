@@ -1,16 +1,16 @@
 import argparse
 import csv
 import sys
+import logging
 from pathlib import Path
-
-import class2_argparse_demo
-
 
 def check_data(filename):
     """Read the CSV file and check for missing values."""
     with open(filename, "r") as f:
+        logger.debug(f"Opened file: {filename}") #adding logger lines
         reader = csv.reader(f)
         rows = list(reader)
+        logger.debug(f"Read {len(rows)} rows from the file.")
 
     header = rows[0]
     data = rows[1:]
@@ -19,8 +19,18 @@ def check_data(filename):
     for row_number, row in enumerate(data, start=2):
         if any(value == "" for value in row):
             missing_rows.append(row_number)
+            logger.debug(f"Missing values found in row {row_number}.")
 
     return header, data, missing_rows
+
+# Set up logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)-8s %(message)s",
+    datefmt="%H:%M:%S"
+)
+
+logger = logging.getLogger(__name__)
 
 # TODO 1: Create an ArgumentParser
 # Description: "Check the quality of a CSV file."
@@ -53,16 +63,31 @@ parser.add_argument("--verbose", "-v", action="store_true", help="Show detailed 
 # TODO 5: Parse the command-line arguments
 args = parser.parse_args()
 
-# Check if the file exists 
+# If verbose flag is used, switch logging to DEBUG
+if args.verbose:
+    logger.setLevel(logging.DEBUG)
+    logger.debug("Verbose mode enabled: DEBUG logging is active.")
+
+# Check if the file exists                          #switch to using logging instead of print statements
+# p = Path(args.input)
+# if not p.is_file():
+#     print(f"File not found: '{args.input}'")
+#     sys.exit(1)
+
+# print(f"File validated: '{args.input}'")
+
 p = Path(args.input)
 if not p.is_file():
-    print(f"File not found: '{args.input}'")
+    logger.error(f"File not found: '{args.input}'")
     sys.exit(1)
 
-print(f"File validated: '{args.input}'")
+logger.info(f"File validated: '{args.input}'")
 
 # Check the data
 header, data, missing_rows = check_data(args.input)
+
+#Optional: Add logging for saving the report
+logger.info(f"Saving report to {args.output}")
 
 # Save the report
 with open(args.output, "w") as f:
