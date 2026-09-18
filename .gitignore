@@ -5,6 +5,10 @@
 desktop.ini
 Thumbs.db
 
+
+*.md
+*.py
+
 # Data files
 *.csv
 *.txt
