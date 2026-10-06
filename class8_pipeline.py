@@ -1,7 +1,6 @@
+from class8_src import load_netflix, require_columns
 import logging
 from pathlib import Path
-from class8_data_loader import load_netflix
-from class8_data_validator import require_columns
 
 logging.basicConfig(
     level=logging.INFO,
@@ -26,7 +25,7 @@ def main():
         exit(1)
 
     # Log an INFO
-    logger.info("Data loaded and validated successfully.")
+    logger.info("Pipeline Completed.")
 
 
 if __name__ == "__main__":
