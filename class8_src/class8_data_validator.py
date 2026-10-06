@@ -15,7 +15,7 @@ def require_columns(df, required_columns):
         raise ValueError(f"Missing required columns: {missing_columns}")
     
     # Log an INFO.
-    logger.info("Pipeline completed.")
+    logger.info("Validation successful.")
 
     # Return the DataFrame.
     return df
