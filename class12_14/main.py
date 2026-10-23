@@ -1,9 +1,6 @@
-import logging 
-
+import logging
 from fastapi import FastAPI, Query
 from src import MovieInput, MovieResponse
-from fastapi import Query
-from src import MovieResponse
 
 logging.basicConfig(
     level=logging.INFO,
@@ -12,18 +9,15 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+app = FastAPI(title="Movie API")
+
 movies = {
     1: {"id": 1, "title": "Movie A", "release_year": 2020},
     2: {"id": 2, "title": "Movie B", "release_year": 2021},
 }
 
-app = FastAPI(title="Movie API")
-logging.basicConfig(level=logging.INFO)
-
-
 @app.get("/health")
 def health_check():
-    logging.info("Health check requested")
     return {"status": "ok"}
 
 
